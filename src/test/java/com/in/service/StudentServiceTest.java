@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.in.entity.Student;
 import com.in.exception.StudentNotFoundException;
 import com.in.repo.StudentRepo;
+import com.in.utils.StudentUtils;
 
 @SpringBootTest
 public class StudentServiceTest {
@@ -29,9 +32,17 @@ public class StudentServiceTest {
 
 	@Mock
 	private StudentRepo studentRepo;
+	
+	@BeforeAll //Approach-2
+	public static void setupAll() {
+		//When test class is loaded this method will load and this method is static method.
+		//Before executing any test method.... this method will load.
+		Mockito.mockStatic(StudentUtils.class);
+	}
 
 	@BeforeEach // calling before, every test method...
 	public void setUp() {
+		//This method will load before each test case calling.
 		MockitoAnnotations.openMocks(this); // Initializing all Mocks...
 	}
 
@@ -178,6 +189,7 @@ public class StudentServiceTest {
 		
 		// Setting expectations...
 		Mockito.when(studentRepo.count()).thenReturn(this.getAllStudents().stream().count());
+		Mockito.when(StudentUtils.findCount(2)).thenReturn(expected);
 		
 		// Actual Method call..
 		String actual=studentService.studentCount();
@@ -197,6 +209,7 @@ public class StudentServiceTest {
 		
 		// Setting expectations...
 		Mockito.when(studentRepo.count()).thenReturn(0L);
+		Mockito.when(StudentUtils.findCount(0)).thenReturn(expected);
 		
 		// Actual Method call..
 		String actual=studentService.studentCount();
@@ -216,6 +229,7 @@ public class StudentServiceTest {
 		
 		// Setting expectations...
 		Mockito.when(studentRepo.count()).thenReturn(8L);
+		Mockito.when(StudentUtils.findCount(8)).thenReturn(expected);
 		
 		// Actual Method call..
 		String actual=studentService.studentCount();
@@ -228,6 +242,28 @@ public class StudentServiceTest {
 		Mockito.verify(studentRepo).count();
 
 	}
+	
+	/*@Test //Approach-1
+	public void testStudentCountValueFour() {
+		try(MockedStatic<StudentUtils> mockedUtils=Mockito.mockStatic(StudentUtils.class)) {//try with resources
+		String expected="FOUR";
+		
+		// Setting expectations...
+		Mockito.when(studentRepo.count()).thenReturn(4L);
+		mockedUtils.when(()->StudentUtils.findCount(4)).thenReturn(expected);//static method mocking.
+		
+		// Actual Method call..
+		String actual=studentService.studentCount();
+		
+		// Validating results...
+		Assertions.assertNotNull(actual);
+		Assertions.assertEquals(expected, actual);
+		
+		// Verify mock methods calling or not...
+		Mockito.verify(studentRepo).count();
+		mockedUtils.verify(()->StudentUtils.findCount(4));
+		}
+	}*/
 
 	private Student getStudent() {
 		Student student = new Student();
