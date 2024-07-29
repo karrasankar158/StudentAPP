@@ -3,9 +3,11 @@ package com.in.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -243,7 +245,8 @@ public class StudentServiceTest {
 
 	}
 	
-	/*@Test //Approach-1
+	@Test //Approach-1
+	@Disabled
 	public void testStudentCountValueFour() {
 		try(MockedStatic<StudentUtils> mockedUtils=Mockito.mockStatic(StudentUtils.class)) {//try with resources
 		String expected="FOUR";
@@ -263,7 +266,7 @@ public class StudentServiceTest {
 		Mockito.verify(studentRepo).count();
 		mockedUtils.verify(()->StudentUtils.findCount(4));
 		}
-	}*/
+	}
 
 	private Student getStudent() {
 		Student student = new Student();
@@ -287,6 +290,12 @@ public class StudentServiceTest {
 		student1.setName("mohan");
 		student1.setIsMale(true);
 		return List.of(student, student1);
+	}
+	
+	@AfterEach
+	public void tearDown() {
+		studentService=null;
+		studentRepo=null;
 	}
 
 }
