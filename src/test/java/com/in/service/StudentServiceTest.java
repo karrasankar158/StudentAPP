@@ -97,8 +97,10 @@ public class StudentServiceTest {
 		Boolean response = false;
 
 		// Setting expectations.... How to Mock void method...
-		Mockito.when(studentRepo.existsById(Mockito.any(Long.class))).thenReturn(response);
-
+		//Mockito.when(studentRepo.existsById(Mockito.any(Long.class))).thenReturn(response);
+		//or
+		Mockito.doThrow(StudentNotFoundException.class).when(studentRepo).existsById(0L);
+ 
 		// Actual test method call..
 		Assertions.assertThrows(StudentNotFoundException.class, () -> 
 			studentService.studentDeleteById(this.getStudent().getId()));
