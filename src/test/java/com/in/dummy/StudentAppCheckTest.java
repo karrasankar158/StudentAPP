@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @SpringBootTest
 public class StudentAppCheckTest {
@@ -29,5 +30,12 @@ public class StudentAppCheckTest {
 		method.setAccessible(true);
 		Integer number=(Integer)method.invoke(studentAppCheck,100);
 		Assertions.assertNotNull(number);
+		
+		ReflectionTestUtils.setField(studentAppCheck, "name", "Hello");
+		String name1=(String)ReflectionTestUtils.getField(studentAppCheck, "name");
+		System.out.println(name1);
+		
+		Integer response=(Integer)ReflectionTestUtils.invokeMethod(studentAppCheck, "getNumber", 10);
+		System.out.println(response);
 	}
 }
