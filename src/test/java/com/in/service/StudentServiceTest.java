@@ -54,7 +54,7 @@ public class StudentServiceTest {
 		String expected = save+" 9999";
 		ReflectionTestUtils.setField(studentService, "save",save);
 
-		// Setting expectations
+		// Setting expectations or stubbing
 		Mockito.when(studentRepo.save(Mockito.any(Student.class))).thenReturn(this.getStudent());
 
 		// Actual test method call..

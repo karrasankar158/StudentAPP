@@ -3,14 +3,48 @@ package com.in.dummy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @SpringBootTest
 public class StudentAppCheckTest {
+	
+	@Spy //spy will call real object.
+	private List<String> spyList=new ArrayList<>();
+	
+	@Mock //mock will call mock object. 
+	private List<String> mockList=new ArrayList<>();
+	
+	@Test //spy will call real object.
+	public void testSpy() {
+		//Setting expectations or stubbing
+		Mockito.when(spyList.add(Mockito.any(String.class))).thenReturn(true);
+		
+		// validating results...
+		Assertions.assertEquals(1, spyList.size());
+		Assertions.assertSame(1, spyList.size());
+		
+	}
+	
+	@Test //mock will call mock object. 
+	public void testMock() {
+		//Setting expectations or stubbing
+		Mockito.when(mockList.add(Mockito.any(String.class))).thenReturn(true);
+		Mockito.when(mockList.size()).thenReturn(1);
+		
+		// validating results...
+		Assertions.assertEquals(1, mockList.size());
+		Assertions.assertSame(1, mockList.size());
+		
+	}
 
 	@Test
 	public void testToAccessPrivateFieldsMethodsAndConstrctor() throws Exception {
