@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +33,15 @@ public class StudentAppCheckTest {
 		Assertions.assertEquals(1, spyList.size());
 		Assertions.assertSame(1, spyList.size());
 		
+	}
+	
+	@Test
+	public void testSpyCheck() {
+		List<String> list=new LinkedList<>();
+		List<String> spy=Mockito.spy(list);
+		//Setting expectations or stubbing
+		//Mockito.when(spy.get(0)).thenReturn("Sankar");
+		Mockito.doReturn("Sankar").when(spy).get(0);
 	}
 	
 	@Test //mock will call mock object. 
