@@ -1,0 +1,10 @@
+//Save Operation Curl:
+
+curl --location 'http://localhost:8080/student/save' \
+--header 'Content-Type: application/json' \
+--data '{
+"id" : 1001,
+"name" : "ravi",
+"branch" : "mech",
+"isMale" : true    
+}'

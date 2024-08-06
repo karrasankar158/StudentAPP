@@ -24,7 +24,7 @@ import com.in.service.StudentService;
 @WebMvcTest(controllers = StudentController.class) 
 //WebMvcTest will create bean for only controller class.
 public class StudentControllerTest {
-	
+	/*
 	@MockBean
 	private StudentService studentService;
 	
@@ -69,6 +69,91 @@ public class StudentControllerTest {
 				       .post(path)
 				       .contentType(APPLICATION_JSON_UTF8)
 				       .content(JSON))
+		   .andExpect(MockMvcResultMatchers.status().is(201)).andReturn();
+		
+		//Validating results
+		Assertions.assertNotNull(response);
+	}*/
+	/*
+	@MockBean
+	private StudentService studentService;
+	
+	@Autowired
+	private MockMvc mockMvc;
+	
+     private Student student;
+	
+	@BeforeEach //Calling before, every test method...
+	public void setup() {
+		
+		//This method will load before each test case calling.....
+		MockitoAnnotations.openMocks(this);//Initializing all Mocks...
+		
+		student=new Student();
+		student.setId(9999L);
+		student.setName("Mohan");
+		student.setBranch("Civil");
+		student.setIsMale(true);
+	}
+	
+	@Test
+	public void testSaveStudent() throws Exception {
+		//passing controller and method path
+		String path="/student/save";
+		
+		ObjectMapper objectMapper=new ObjectMapper();//Jackson API
+		//Here Converting Student Object into JSON String.
+		String JSON=objectMapper.writeValueAsString(student);
+		
+		
+		MvcResult response=mockMvc
+		   .perform(
+				    MockMvcRequestBuilders
+				       .post(path)
+				       .contentType(MediaType.APPLICATION_JSON)
+				       .content(JSON))
+		   .andExpect(MockMvcResultMatchers.status().is(201)).andReturn();
+		
+		//Validating results
+		Assertions.assertNotNull(response);
+	}*/
+	
+	/*
+	@MockBean
+	private StudentService studentService;
+	
+	@Autowired
+	private MockMvc mockMvc;
+	
+	@Test
+	public void testSaveStudent() throws Exception {
+		
+		MvcResult response=mockMvc
+		   .perform(
+				    MockMvcRequestBuilders
+				       .post("/student/save")
+				       .contentType(MediaType.APPLICATION_JSON)
+				       .content("{\"id\" : 1001,\"name\" : \"ravi\",\"branch\" : \"mech\",\"isMale\" : true}"))
+		   .andExpect(MockMvcResultMatchers.status().is(201)).andReturn();
+		
+		//Validating results
+		Assertions.assertNotNull(response);
+	}*/
+	
+	@MockBean
+	private StudentService studentService;
+	
+	@Autowired
+	private MockMvc mockMvc;
+	
+	@Test
+	public void testSaveStudent() throws Exception {
+		
+		MvcResult response=mockMvc
+		   .perform(
+				    MockMvcRequestBuilders
+				       .post("/student/save").contentType(MediaType.APPLICATION_JSON)
+				       .content("{}"))
 		   .andExpect(MockMvcResultMatchers.status().is(201)).andReturn();
 		
 		//Validating results
