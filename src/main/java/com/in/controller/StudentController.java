@@ -18,8 +18,8 @@ public class StudentController {
 	@Autowired
 	private StudentService studentService;
 	
-	@PostMapping("/save")
-	public ResponseEntity<String> saveStudent(@RequestBody Student student){
+	@PostMapping("/save") //Handler method
+	public ResponseEntity<String> saveStudent(@RequestBody Student student){//payload
 		String response=studentService.saveStudent(student);
 		return new ResponseEntity<>(response,HttpStatus.CREATED);
 	}

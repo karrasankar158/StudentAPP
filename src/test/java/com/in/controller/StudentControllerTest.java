@@ -1,23 +1,18 @@
 package com.in.controller;
 
-import java.nio.charset.Charset;
-
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.in.entity.Student;
 import com.in.service.StudentService;
 
@@ -139,7 +134,7 @@ public class StudentControllerTest {
 		//Validating results
 		Assertions.assertNotNull(response);
 	}*/
-	
+	/*
 	@MockBean
 	private StudentService studentService;
 	
@@ -158,6 +153,34 @@ public class StudentControllerTest {
 		
 		//Validating results
 		Assertions.assertNotNull(response);
-	}
+	}*/
+	
+	@MockBean //Advanced of @Mock
+	private StudentService studentService;
+	
+	@Autowired
+	private MockMvc mockMvc;
 
+	@Test
+	public void testSaveStudent() throws Exception {
+		//Setting expectations or stubbing or Mocking the service behavior. 
+		String expected="done";
+		Mockito.when(studentService.saveStudent(Mockito.any(Student.class))).thenReturn(expected);
+		
+		//Actual method call or performing an HTTP request to create an Student
+		//While passing path need to add both class level and method level path
+		String path="/student/save";
+		//While creating object is Java Student student=new Student();
+		//To create object in JSON {}
+		ResultActions response=mockMvc
+		                           .perform(MockMvcRequestBuilders
+		    		                  .post(path)
+		    		                  .contentType(MediaType.APPLICATION_JSON)
+		    		                  .content("{}"));
+		
+		//Assertions the response expectations.
+		response.andExpect(MockMvcResultMatchers.status().isCreated())
+		.andExpect(MockMvcResultMatchers.content().string(CoreMatchers.equalTo(expected)));
+		Assertions.assertNotNull(response);
+	}
 }
