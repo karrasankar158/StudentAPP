@@ -8,3 +8,6 @@ curl --location 'http://localhost:8080/student/save' \
 "branch" : "mech",
 "isMale" : true    
 }'
+
+//Read Single Row Operation Curl:
+curl --location 'http://localhost:8080/student/find/1001'

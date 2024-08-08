@@ -2,17 +2,21 @@ package com.in.controller;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.in.entity.Student;
 import com.in.service.StudentService;
 
@@ -160,6 +164,24 @@ public class StudentControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
+	
+	private Student student;
+	
+	@Autowired
+	private ObjectMapper objectMapper; //Jackson API, Spring web starter
+	
+	@BeforeEach //Calling before, every test method.
+	public void setup() {
+		//This setup method will load before each test case/method calling.
+		
+		MockitoAnnotations.openMocks(this);//Initializing all mocks.
+		//Single student
+		student=new Student();
+		student.setId(9999L);
+		student.setBranch("Civil");
+		student.setName("Sankar");
+		student.setIsMale(true);
+	}
 
 	@Test
 	public void testSaveStudent() throws Exception {
@@ -182,5 +204,25 @@ public class StudentControllerTest {
 		response.andExpect(MockMvcResultMatchers.status().isCreated())
 		.andExpect(MockMvcResultMatchers.content().string(CoreMatchers.equalTo(expected)));
 		Assertions.assertNotNull(response);
+	}
+	
+	@Test
+	public void testGetStudentById() throws Exception {
+		//Setting expectations or Stubbing.
+		Mockito.when(studentService.findByStudentByUsingId(Mockito.any(Long.class))).thenReturn(student);
+		
+		//class level path+method level path+path variable
+		String path="/student/find/{id}";
+		
+		MvcResult mvcResult=mockMvc
+		     .perform(MockMvcRequestBuilders
+		    		 .get(path,"9999")
+		    		 .contentType(MediaType.APPLICATION_JSON))
+		     .andExpect(MockMvcResultMatchers.status().isOk())//200
+		     .andReturn();
+		
+		//Validating results
+		Assertions.assertNotNull(mvcResult);
+		Assertions.assertEquals(objectMapper.writeValueAsString(student), mvcResult.getResponse().getContentAsString());
 	}
 }
