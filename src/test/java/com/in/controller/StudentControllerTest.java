@@ -218,7 +218,12 @@ public class StudentControllerTest {
 		     .perform(MockMvcRequestBuilders
 		    		 .get(path,"9999")
 		    		 .contentType(MediaType.APPLICATION_JSON))
+		     //Wherever entity or model is returning those places jsonPath is applicable
 		     .andExpect(MockMvcResultMatchers.status().isOk())//200
+		     .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(9999))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Sankar"))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$.branch").value("Civil"))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$.isMale").value(true))
 		     .andReturn();
 		
 		//Validating results
