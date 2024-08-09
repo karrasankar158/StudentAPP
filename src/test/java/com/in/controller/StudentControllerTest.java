@@ -202,6 +202,8 @@ public class StudentControllerTest {
 		
 		//Assertions the response expectations.
 		response.andExpect(MockMvcResultMatchers.status().isCreated())
+		//While Validating String response in rest controller method.
+		.andExpect(MockMvcResultMatchers.jsonPath("$").value("done"))
 		.andExpect(MockMvcResultMatchers.content().string(CoreMatchers.equalTo(expected)));
 		Assertions.assertNotNull(response);
 	}
