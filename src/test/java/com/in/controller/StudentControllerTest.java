@@ -1,5 +1,7 @@
 package com.in.controller;
 
+import java.util.List;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -167,6 +169,8 @@ public class StudentControllerTest {
 	
 	private Student student;
 	
+	private Student student2;
+	
 	@Autowired
 	private ObjectMapper objectMapper; //Jackson API, Spring web starter
 	
@@ -175,12 +179,19 @@ public class StudentControllerTest {
 		//This setup method will load before each test case/method calling.
 		
 		MockitoAnnotations.openMocks(this);//Initializing all mocks.
-		//Single student
+		//one student
 		student=new Student();
 		student.setId(9999L);
 		student.setBranch("Civil");
 		student.setName("Sankar");
 		student.setIsMale(true);
+		
+		//second Student
+		student2=new Student();
+		student2.setId(8888L);
+		student2.setBranch("Mech");
+		student2.setName("Sai");
+		student2.setIsMale(false);
 	}
 
 	@Test
@@ -231,5 +242,34 @@ public class StudentControllerTest {
 		//Validating results
 		Assertions.assertNotNull(mvcResult);
 		Assertions.assertEquals(objectMapper.writeValueAsString(student), mvcResult.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void testGetAllStudents() throws Exception {
+		//Setting expectations or Stubbing.
+		Mockito.when(studentService.findAllStudents()).thenReturn(List.of(student,student2));
+		
+		//class level path+method level path+path variable
+		String path="/student/find/all";
+		
+		MvcResult mvcResult=mockMvc
+		     .perform(MockMvcRequestBuilders
+		    		 .get(path)
+		    		 .contentType(MediaType.APPLICATION_JSON))
+		     //Wherever entity or model is returning those places jsonPath is applicable
+		     .andExpect(MockMvcResultMatchers.status().isOk())//200
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(9999))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Sankar"))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[0].branch").value("Civil"))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[0].isMale").value(true))
+		     
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(8888))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Sai"))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[1].branch").value("Mech"))
+		     .andExpect(MockMvcResultMatchers.jsonPath("$[1].isMale").value(false))
+		     .andReturn();
+		
+		//Validating results
+		Assertions.assertNotNull(mvcResult);
 	}
 }

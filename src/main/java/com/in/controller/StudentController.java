@@ -1,5 +1,7 @@
 package com.in.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,12 @@ public class StudentController {
 	@GetMapping("/find/{id}")//retrieve Single row operation //Handler method
 	public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id){
 		Student response=studentService.findByStudentByUsingId(id);
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	
+	@GetMapping("/find/all")//retrieve all rows operation //Handler method
+	public ResponseEntity<List<Student>> getAllStudent(){
+		List<Student> response=studentService.findAllStudents();
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 

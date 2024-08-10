@@ -11,3 +11,6 @@ curl --location 'http://localhost:8080/student/save' \
 
 //Read Single Row Operation Curl:
 curl --location 'http://localhost:8080/student/find/1001'
+
+//Read All Rows Operation Curl:
+curl --location 'http://localhost:8080/student/find/all'
