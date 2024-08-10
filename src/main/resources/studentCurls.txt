@@ -14,3 +14,6 @@ curl --location 'http://localhost:8080/student/find/1001'
 
 //Read All Rows Operation Curl:
 curl --location 'http://localhost:8080/student/find/all'
+
+//Student Delete by Id curl:
+curl --location --request DELETE 'http://localhost:8080/student/delete?id=1001'

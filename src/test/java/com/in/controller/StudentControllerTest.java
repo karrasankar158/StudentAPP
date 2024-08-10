@@ -11,10 +11,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -249,7 +252,7 @@ public class StudentControllerTest {
 		//Setting expectations or Stubbing.
 		Mockito.when(studentService.findAllStudents()).thenReturn(List.of(student,student2));
 		
-		//class level path+method level path+path variable
+		//class level path+method level path
 		String path="/student/find/all";
 		
 		MvcResult mvcResult=mockMvc
@@ -271,5 +274,33 @@ public class StudentControllerTest {
 		
 		//Validating results
 		Assertions.assertNotNull(mvcResult);
+	}
+	
+	@Test
+	public void testStudentDeleteById() throws Exception {
+		//1. Expected
+		String expected="deleted";
+		
+		//2. Setting expectations or Stubbing or Mock method
+		Mockito.when(studentService.studentDeleteById(Mockito.any(Long.class))).thenReturn(expected);
+		
+		//3. class level path+method level path
+		String path="/student/delete";
+		
+		//4. create Dummy or proxy or fake request
+		MockHttpServletRequestBuilder request=MockMvcRequestBuilders.delete(path)
+		
+		//5. requestParam
+		.param("id", "1001");
+		
+		//6. Execute request and get result
+		MvcResult result=mockMvc.perform(request).andReturn();
+		
+		//7. Read Response
+		MockHttpServletResponse response=result.getResponse();
+		
+		//8. Validating results 
+		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+		Assertions.assertEquals(expected, response.getContentAsString());
 	}
 }

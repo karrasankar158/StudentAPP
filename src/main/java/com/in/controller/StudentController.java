@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.in.entity.Student;
@@ -37,6 +39,13 @@ public class StudentController {
 	@GetMapping("/find/all")//retrieve all rows operation //Handler method
 	public ResponseEntity<List<Student>> getAllStudent(){
 		List<Student> response=studentService.findAllStudents();
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	//http://localhost:8080/student/delete/1001  @PathVariable   value
+	//http://localhost:8080/student/delete?id=1001 @RequestParam key=value
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> studentDeleteById(@RequestParam Long id){
+		String response=studentService.studentDeleteById(id);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 
