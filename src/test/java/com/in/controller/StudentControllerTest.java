@@ -353,4 +353,18 @@ public class StudentControllerTest {
 		                            .andExpect(jsonPath("$").value("true"));
 		Assertions.assertNotNull(response);    
 	}
+	
+	@Test
+	public void testStudentCount() throws Exception {
+		//Setting expectations or stubbing or mock method
+		Mockito.when(studentService.studentCount()).thenReturn("TWO");
+		
+		//Response-chain of methods
+		ResultActions response= mockMvc
+		                           .perform(get("/student/count")
+				                            .contentType(MediaType.APPLICATION_JSON))
+		                            .andExpect(status().isOk())
+		                            .andExpect(jsonPath("$").value("TWO"));
+		Assertions.assertNotNull(response);    
+	}
 }

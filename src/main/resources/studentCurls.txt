@@ -27,3 +27,6 @@ curl --location --request PATCH 'http://localhost:8080/student/update/1003' \
 
 student exists by id Curl:
 curl --location 'http://localhost:8080/student/exists?id=1003'
+
+Student Count Curl:
+curl --location 'http://localhost:8080/student/count'

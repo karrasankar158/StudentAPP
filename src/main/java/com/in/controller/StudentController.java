@@ -64,5 +64,11 @@ public class StudentController {
 		Boolean response=studentService.studentExistsById(id);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
+	
+	@GetMapping("/count")
+	public ResponseEntity<String> studentCount(){
+		String response=studentService.studentCount();
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
 
 }
