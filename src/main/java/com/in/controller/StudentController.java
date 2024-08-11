@@ -26,7 +26,7 @@ public class StudentController {
 	private StudentService studentService; //Has-A
 	
 	@PostMapping("/save") //save operation //Handler method
-	public ResponseEntity<String> saveStudent(@RequestBody Student student){//payload
+	public ResponseEntity<String> saveStudent(@RequestBody Student student){//payLoad
 		String response=studentService.saveStudent(student);
 		return new ResponseEntity<>(response,HttpStatus.CREATED);
 	}
@@ -56,6 +56,12 @@ public class StudentController {
 	@PatchMapping("/update/{id}")
 	public ResponseEntity<String> updateStudentById(@PathVariable("id") long id,@RequestBody Student student){
 		String response=studentService.updateStudentByUsingId(id, student);
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	
+	@GetMapping("/exists")
+	public ResponseEntity<Boolean> studentExistsById(@RequestParam Long id){
+		Boolean response=studentService.studentExistsById(id);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 

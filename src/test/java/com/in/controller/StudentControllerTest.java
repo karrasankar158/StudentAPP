@@ -1,5 +1,9 @@
 package com.in.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
@@ -333,5 +337,20 @@ public class StudentControllerTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
 		Assertions.assertEquals(expected, response.getContentAsString());
+	}
+	
+	@Test
+	public void testStudentExistsById() throws Exception {
+		//Setting expectations or stubbing or mock method
+		Mockito.when(studentService.studentExistsById(Mockito.any(Long.class))).thenReturn(true);
+		
+		//Response-chain of methods
+		ResultActions response= mockMvc
+		                           .perform(get("/student/exists")
+				                            .param("id", "9999")
+				                            .contentType(MediaType.APPLICATION_JSON))
+		                            .andExpect(status().isOk())
+		                            .andExpect(jsonPath("$").value("true"));
+		Assertions.assertNotNull(response);    
 	}
 }
