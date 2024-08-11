@@ -303,4 +303,35 @@ public class StudentControllerTest {
 		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
 		Assertions.assertEquals(expected, response.getContentAsString());
 	}
+	
+	@Test
+	public void testUpdateStudentById() throws Exception {
+		//1. Expected
+		String expected="updated";
+		
+		//2. Setting Expectations or Stubbing or Mock method
+		Mockito.when(studentService.updateStudentByUsingId(Mockito.any(Long.class), 
+				                   Mockito.any(Student.class))).thenReturn(expected);
+		
+		//3. class level path+method level path+path variable 
+		String path="/student/update/{id}";
+		
+		//4. create dummy or proxy or fake request
+		MockHttpServletRequestBuilder request=MockMvcRequestBuilders.patch(path,"9999")
+		
+		//5. request body or payLoad
+		.contentType(MediaType.APPLICATION_JSON)
+		.content(objectMapper.writeValueAsString(student));
+		
+		//6. Execute request and get result
+		MvcResult result=mockMvc.perform(request).andReturn();
+		
+		//7. Read response
+		MockHttpServletResponse response=result.getResponse();
+		
+		//8. Validating response
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+		Assertions.assertEquals(expected, response.getContentAsString());
+	}
 }

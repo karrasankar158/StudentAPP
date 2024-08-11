@@ -17,3 +17,10 @@ curl --location 'http://localhost:8080/student/find/all'
 
 //Student Delete by Id curl:
 curl --location --request DELETE 'http://localhost:8080/student/delete?id=1001'
+
+Update Single field Operation Curl:
+curl --location --request PATCH 'http://localhost:8080/student/update/1003' \
+--header 'Content-Type: application/json' \
+--data '{
+"name" : "Mohan"
+}'

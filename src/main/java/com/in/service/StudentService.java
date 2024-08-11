@@ -54,7 +54,8 @@ public class StudentService {
 	public String updateStudentByUsingId(Long id, Student student) {
 		Student StudentRetrieved = studentRepo.findById(id).get();
 
-		StudentRetrieved.setName(student.getName());
+		StudentRetrieved.setName(student.getName());//updating field value
+		
 		Student studentUpdated = studentRepo.save(StudentRetrieved);
 		return update + " " + studentUpdated.getId();
 	}
