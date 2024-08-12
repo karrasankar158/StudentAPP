@@ -1,6 +1,8 @@
 package com.in.controller;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -365,6 +367,20 @@ public class StudentControllerTest {
 				                            .contentType(MediaType.APPLICATION_JSON))
 		                            .andExpect(status().isOk())
 		                            .andExpect(jsonPath("$").value("TWO"));
+		Assertions.assertNotNull(response);    
+	}
+	
+	@Test
+	public void testStudentNotFound() throws Exception {
+		
+		//Response-chain of methods
+		ResultActions response= mockMvc
+		                           .perform(get("/student/exists")
+		                        		    .param("id", "-100")
+				                            .contentType(MediaType.APPLICATION_JSON))
+		                            .andExpect(status().isNotFound()) //HttpStatus
+		                            .andExpect(content().string(equalTo("Student Not Found!")));
+		
 		Assertions.assertNotNull(response);    
 	}
 }

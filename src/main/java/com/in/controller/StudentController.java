@@ -60,7 +60,10 @@ public class StudentController {
 	}
 	
 	@GetMapping("/exists")
-	public ResponseEntity<Boolean> studentExistsById(@RequestParam Long id){
+	public ResponseEntity<Object> studentExistsById(@RequestParam Long id){
+		if(id<0) //less than -1<0
+			return new ResponseEntity<>("Student Not Found!",HttpStatus.NOT_FOUND);
+		
 		Boolean response=studentService.studentExistsById(id);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}

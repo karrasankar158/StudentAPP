@@ -13,9 +13,9 @@ import lombok.Setter;
 public class StudentNotFoundException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@NonNull
 	private String message;
 	
-	private Integer statusCode;
+	private Integer statusCode;	
 }
