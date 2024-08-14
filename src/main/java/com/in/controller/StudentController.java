@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.in.entity.Student;
+import com.in.exception.StudentNotFoundException;
 import com.in.service.StudentService;
 
 @RestController
@@ -62,7 +63,8 @@ public class StudentController {
 	@GetMapping("/exists")
 	public ResponseEntity<Object> studentExistsById(@RequestParam Long id){
 		if(id<0) //less than -1<0
-			return new ResponseEntity<>("Student Not Found!",HttpStatus.NOT_FOUND);
+			//return new ResponseEntity<>("Student Not Found!",HttpStatus.NOT_FOUND);
+			throw new StudentNotFoundException("Student Not Found! "+id);
 		
 		Boolean response=studentService.studentExistsById(id);
 		return new ResponseEntity<>(response,HttpStatus.OK);
