@@ -26,5 +26,17 @@ public class StudentControllerAdvice {
 		
 		return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(value = Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<StudentErrorResponse> studentInternalServerError(Exception ex){
+		
+		StudentErrorResponse response=new StudentErrorResponse();
+		response.setMessage(ex.getMessage());
+		response.setErrorStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		response.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+		
+		return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }
