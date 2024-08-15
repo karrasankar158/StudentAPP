@@ -1,8 +1,8 @@
 package com.in.controller;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+//import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -379,7 +379,23 @@ public class StudentControllerTest {
 		                        		    .param("id", "-100")
 				                            .contentType(MediaType.APPLICATION_JSON))
 		                            .andExpect(status().isNotFound()) //HttpStatus
-		                            .andExpect(content().string(equalTo("Student Not Found!")));
+		                            //After StudentControllerAdvice created commented this line.
+		                            //.andExpect(content().string(equalTo("Student Not Found!")));
+		                            .andExpect(jsonPath("$.message").value("Student Not Found! -100"));
+		
+		Assertions.assertNotNull(response);    
+	}
+	
+	@Test
+	public void testStudentInternalServerError() throws Exception {
+		
+		//Response-chain of methods
+		ResultActions response= mockMvc
+		                           .perform(get("/student/exists")
+		                        		    .param("id", "Sankar")
+				                            .contentType(MediaType.APPLICATION_JSON))
+		                            .andExpect(status().isInternalServerError()) //HttpStatus
+		                            .andExpect(jsonPath("$.errorStatus").value("500"));
 		
 		Assertions.assertNotNull(response);    
 	}
