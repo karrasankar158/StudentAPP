@@ -241,6 +241,7 @@ public class StudentControllerTest {
 		MvcResult mvcResult=mockMvc
 		     .perform(MockMvcRequestBuilders
 		    		 .get(path,"9999")
+		    		 .header(StudentConstraints.STUDENT_KEY, "092u2jt2tt2j2oj2t2to")
 		    		 .contentType(MediaType.APPLICATION_JSON))
 		     //Wherever entity or model is returning those places jsonPath is applicable
 		     .andExpect(MockMvcResultMatchers.status().isOk())//200

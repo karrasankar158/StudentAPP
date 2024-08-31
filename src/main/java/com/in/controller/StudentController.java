@@ -24,6 +24,8 @@ import com.in.exception.StudentKeyNotFoundException;
 import com.in.exception.StudentNotFoundException;
 import com.in.service.StudentService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController {
@@ -32,7 +34,7 @@ public class StudentController {
 	private StudentService studentService; //Has-A
 	
 	@PostMapping("/save") //save operation //Handler method
-	public ResponseEntity<String> saveStudent(@RequestHeader(value=StudentConstraints.STUDENT_KEY) String studentKey,
+	public ResponseEntity<String> saveStudent(@RequestHeader(value=StudentConstraints.STUDENT_KEY,required = true) String studentKey,
 			@RequestBody Student student){//payLoad
 		
 		if(ObjectUtils.isEmpty(studentKey)) //null or empty
@@ -47,9 +49,20 @@ public class StudentController {
 	}
 	
 	@GetMapping("/find/{id}")//retrieve Single row operation //Handler method
-	public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id){
+	public ResponseEntity<Student> getStudentById(HttpServletRequest httpServletRequest,
+			@PathVariable("id") Long id){
+		
+		String studentKey=httpServletRequest.getHeader(StudentConstraints.STUDENT_KEY);
+		
+		if(ObjectUtils.isEmpty(studentKey)) //null or empty
+		throw new StudentKeyNotFoundException("request header missing");
+		
 		Student response=studentService.findByStudentByUsingId(id);
-		return new ResponseEntity<>(response,HttpStatus.OK);
+		
+		HttpHeaders headers=new HttpHeaders();
+		headers.set(StudentConstraints.STUDENT_KEY, studentKey);
+		
+		return new ResponseEntity<>(response,headers,HttpStatus.OK);
 	}
 	
 	@GetMapping("/find/all")//retrieve all rows operation //Handler method
