@@ -3,17 +3,17 @@ Spring Boot Actuator Theory:
 Step1:
 
 a. Spring boot Actuator called as Production-ready end-points or
-   production-ready features that help you monitor your application.
+   production-ready features that help you to monitor your application.
 
-b. It provies a wide range of build-in end-points or
-   pre-defined end-points.
+b. It provides a wide range of build-in end-points or
+   predefined end-points.
 
 Example:
 
 Total 14 actuator end-points are there:
 1. beans
 2. caches
-3. health (default endpoint)
+3. health (default end-point)
 4. info
 5. conditions
 6. configprops
@@ -49,7 +49,7 @@ management.endpoints.web.exposure.include=health,mappings
 
 Step6:
 If you want to change base-path of Spring boot actuator end-points "/actuator"
-#Chanching base-path of actuator "/actuator"
+#Changing base-path of actuator "/actuator"
 management.endpoints.web.base-path=/studentservice
 http://localhost:8080/studentservice
 
@@ -75,7 +75,7 @@ At starter class level add below annotation
 @EnableAdminServer
 
 Step10:
-#Register this application with admin client ui
+#Register this application with admin client UI
 spring.boot.admin.client.url=http://localhost:8080
 
 

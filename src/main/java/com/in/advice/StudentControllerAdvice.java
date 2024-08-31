@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.in.exception.StudentErrorResponse;
+import com.in.exception.StudentKeyNotFoundException;
 import com.in.exception.StudentNotFoundException;
 
 @RestControllerAdvice
@@ -42,6 +43,18 @@ public class StudentControllerAdvice {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 		           .contentType(MediaType.APPLICATION_JSON)
 		           .body(response);
+	}
+	
+	@ExceptionHandler(value = StudentKeyNotFoundException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<StudentErrorResponse> studentKeyNotFound(StudentKeyNotFoundException ex){
+		
+		StudentErrorResponse response=new StudentErrorResponse();
+		response.setMessage(ex.getMessage());
+		response.setErrorStatus(HttpStatus.BAD_REQUEST.value());
+		response.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+		
+		return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 	}
 
 }

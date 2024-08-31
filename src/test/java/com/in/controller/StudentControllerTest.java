@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.in.constraints.StudentConstraints;
 import com.in.entity.Student;
 import com.in.service.StudentService;
 
@@ -217,6 +218,7 @@ public class StudentControllerTest {
 		ResultActions response=mockMvc
 		                           .perform(MockMvcRequestBuilders
 		    		                  .post(path)
+		    		                  .header(StudentConstraints.STUDENT_KEY, "092u2jt2tt2j2oj2t2to")
 		    		                  .contentType(MediaType.APPLICATION_JSON)
 		    		                  .content("{}"));
 		
