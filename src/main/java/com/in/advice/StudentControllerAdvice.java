@@ -15,7 +15,7 @@ import com.in.exception.StudentKeyNotFoundException;
 import com.in.exception.StudentNotFoundException;
 
 @RestControllerAdvice
-public class StudentControllerAdvice {
+public class StudentControllerAdvice {   
 	
 	@ExceptionHandler(value = StudentNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)

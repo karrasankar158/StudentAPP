@@ -7,9 +7,12 @@ import de.codecentric.boot.admin.server.config.EnableAdminServer;
 
 @SpringBootApplication
 @EnableAdminServer
-public class StudentAppApplication { 
+public class StudentAppApplication {         
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {    
+		//Disable Auto Restart
+		//System.setProperty("spring.devtools.restart.enabled","false");
+		
 		SpringApplication.run(StudentAppApplication.class, args);
 	}
 
